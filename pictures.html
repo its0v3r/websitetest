@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Pictures - Capybara Lovers Hub</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #4CAF50;
+      padding: 20px;
+      color: white;
+      text-align: center;
+    }
+
+    nav {
+      background-color: #333;
+      overflow: hidden;
+    }
+
+    nav a {
+      float: left;
+      color: white;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+    }
+
+    nav a:hover {
+      background-color: #4CAF50;
+    }
+
+    .content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .gallery-container {
+      position: relative;
+    }
+
+    .gallery {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 500px;
+      margin-bottom: 20px;
+    }
+
+    .gallery img {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 4px;
+      background-size: cover;
+    }
+
+    .gallery-controls {
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    .gallery-controls button {
+      margin: 0 5px;
+      padding: 8px 16px;
+      font-size: 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .thumbnail-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      overflow-x: hidden;
+    }
+
+    .thumbnail {
+      margin: 0 3px;
+      width: 80px;
+      height: 60px;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: opacity 0.3s;
+      background-size: cover;
+    }
+
+    .thumbnail.active {
+      opacity: 1;
+    }
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const images = [
+        { name: "Maria", src: "capybara1.jpg" },
+        { name: "Leo", src: "capybara2.jpg" },
+        { name: "Bella", src: "capybara3.jpg" },
+        { name: "Max", src: "capybara4.jpg" },
+        { name: "Sophie", src: "capybara5.jpg" },
+        { name: "Charlie", src: "capybara6.jpg" },
+        { name: "Lola", src: "capybara7.jpg" },
+        { name: "Rocky", src: "capybara8.jpg" },
+        { name: "Daisy", src: "capybara9.jpg" }
+      ];
+
+      let currentImageIndex = 0;
+
+      function displayImage(index) {
+        const mainImage = document.getElementById("mainImage");
+        const imageName = document.getElementById("imageName");
+
+        mainImage.src = images[index].src;
+        imageName.textContent = images[index].name;
+      }
+
+      function updateThumbnail(index) {
+        const thumbnails = document.getElementsByClassName("thumbnail");
+
+        for (let i = 0; i < thumbnails.length; i++) {
+          if (i === index) {
+            thumbnails[i].classList.add("active");
+          } else {
+            thumbnails[i].classList.remove("active");
+          }
+        }
+      }
+
+      function showNextImage() {
+        currentImageIndex++;
+        if (currentImageIndex === images.length) {
+          currentImageIndex = 0;
+        }
+
+        displayImage(currentImageIndex);
+        updateThumbnail(currentImageIndex);
+      }
+
+      function showPreviousImage() {
+        currentImageIndex--;
+        if (currentImageIndex < 0) {
+          currentImageIndex = images.length - 1;
+        }
+
+        displayImage(currentImageIndex);
+        updateThumbnail(currentImageIndex);
+      }
+
+      function showImageByIndex(index) {
+        currentImageIndex = index;
+        displayImage(currentImageIndex);
+        updateThumbnail(currentImageIndex);
+      }
+
+      function createThumbnail(image, index) {
+        const thumbnailContainer = document.createElement("div");
+        thumbnailContainer.classList.add("thumbnail");
+        thumbnailContainer.style.backgroundImage = `url(${image.src})`;
+        thumbnailContainer.addEventListener("click", () => showImageByIndex(index));
+
+        return thumbnailContainer;
+      }
+
+      function initializeThumbnails() {
+        const thumbnailContainer = document.getElementById("thumbnailContainer");
+
+        for (let i = 0; i < images.length; i++) {
+          const thumbnail = createThumbnail(images[i], i);
+          thumbnailContainer.appendChild(thumbnail);
+        }
+
+        showImageByIndex(currentImageIndex);
+      }
+
+      document.getElementById("nextButton").addEventListener("click", showNextImage);
+      document.getElementById("previousButton").addEventListener("click", showPreviousImage);
+
+      initializeThumbnails();
+    });
+  </script>
+</head>
+
+<body>
+  <header>
+    <h1>Capybara Lovers Hub</h1>
+  </header>
+
+  <nav>
+    <a href="index.html">Index</a>
+    <a href="about.html">About</a>
+    <a href="pictures.html">Pictures</a>
+  </nav>
+
+  <div class="content">
+    <h2>Capybara Pictures</h2>
+    <div class="gallery-container">
+      <div class="gallery">
+        <img id="mainImage" src="" alt="Capybara Image" width="500" height="500">
+      </div>
+      <div id="imageName"></div>
+      <div class="gallery-controls">
+        <button id="previousButton">Previous</button>
+        <button id="nextButton">Next</button>
+      </div>
+    </div>
+    <div class="thumbnail-container" id="thumbnailContainer"></div>
+  </div>
+</body>
+
+</html>
